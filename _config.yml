@@ -8,9 +8,9 @@
 
 # Basic Site Settings
 locale                   : "en-US"
-title                    : "Your Name / Site Title"
+title                    : "Personal Website"
 title_separator          : "-"
-name                     : &name "Your Name"
+name                     : &name "Eddie Morrissey"
 description              : &description "personal description"
 url                      : https://eddiemorrissey.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -22,13 +22,13 @@ repository               : "academicpages/academicpages.github.io"
 author:
   # Biographic information
   avatar           : "profile.png"
-  name             : "Your Sidebar Name"
+  name             : "Eddie Morrissey"
   pronouns         : # example: "she/her"  
-  bio              : "Short biography for the left-hand sidebar"
-  location         : "Earth"
+  bio              : "Medical Device"
+  location         : "Philadelphia PA"
   employer         : "Red Brick University"
   uri              : # URL
-  email            : "none@example.org" 
+  email            : "eddiejjmorrissey@gmail.com" 
 
   # Academic websites
   arxiv            : # URL - Update with the correct link to your profile
