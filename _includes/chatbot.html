@@ -1,0 +1,45 @@
+<!-- Chatbot Widget -->
+<div class="chatbot-container">
+  <!-- Chat Button -->
+  <button id="chatbot-button" class="chatbot-button" aria-label="Open chat">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+      <path d="M7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/>
+    </svg>
+  </button>
+
+  <!-- Chat Window -->
+  <div id="chatbot-window" class="chatbot-window">
+    <!-- Header -->
+    <div class="chatbot-header">
+      <h3>AI Assistant</h3>
+      <button id="chatbot-close" class="chatbot-close" aria-label="Close chat">&times;</button>
+    </div>
+
+    <!-- Messages -->
+    <div id="chatbot-messages" class="chatbot-messages">
+      <!-- Typing Indicator -->
+      <div id="typing-indicator" class="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="chatbot-input-container">
+      <input 
+        type="text" 
+        id="chatbot-input" 
+        class="chatbot-input" 
+        placeholder="Type your message..."
+        autocomplete="off"
+      />
+      <button id="chatbot-send" class="chatbot-send" aria-label="Send message">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
