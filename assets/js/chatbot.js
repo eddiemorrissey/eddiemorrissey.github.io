@@ -1,21 +1,48 @@
-// Chatbot functionality using Hugging Face Inference API
+// Chatbot functionality with simple rule-based responses
 (function() {
   'use strict';
 
-  // Configuration
-  const CONFIG = {
-    // Using a reliable, fast model for free tier
-    model: 'microsoft/DialoGPT-medium',
-    apiUrl: 'https://api-inference.huggingface.co/models/',
-    maxTokens: 150,
-    temperature: 0.7,
-    systemPrompt: `You are a helpful AI assistant on Eddie Morrissey's personal website. Be friendly, concise, and informative. If asked about Eddie, mention that this is his personal website and you can help visitors navigate or answer general questions.`,
-    retryDelay: 5000, // Wait 5 seconds before retry if model is loading
-    maxRetries: 2
-  };
-
   let conversationHistory = [];
   let isOpen = false;
+
+  // Simple response patterns
+  const responses = {
+    greetings: [
+      "Hello! How can I help you today?",
+      "Hi there! What can I do for you?",
+      "Hey! How may I assist you?"
+    ],
+    about: [
+      "This is Eddie Morrissey's personal website. You can explore his portfolio, experience, and CV using the navigation menu above.",
+      "Eddie Morrissey is a professional in the Medical Device field based in Boston, MA. Feel free to explore the site to learn more!"
+    ],
+    portfolio: [
+      "You can view Eddie's portfolio by clicking the 'Portfolio' link in the navigation menu.",
+      "Check out the Portfolio section to see Eddie's work and projects."
+    ],
+    contact: [
+      "You can reach Eddie at eddiejjmorrissey@gmail.com",
+      "Eddie's email is eddiejjmorrissey@gmail.com. Feel free to get in touch!"
+    ],
+    cv: [
+      "You can view Eddie's CV by clicking the 'CV' link in the navigation menu.",
+      "Check out the CV section to see Eddie's full professional background."
+    ],
+    experience: [
+      "You can learn about Eddie's experience by clicking 'Experience' in the menu above.",
+      "Visit the Experience section to see Eddie's professional background."
+    ],
+    default: [
+      "I'm a simple chatbot here to help you navigate Eddie's website. You can ask me about his portfolio, experience, or how to contact him.",
+      "I can help you find information on this website. Try asking about Eddie's portfolio, experience, or contact information.",
+      "Feel free to explore the navigation menu above to learn more about Eddie's work and background!"
+    ],
+    thanks: [
+      "You're welcome! Let me know if you need anything else.",
+      "Happy to help! Feel free to ask if you have more questions.",
+      "My pleasure! Is there anything else I can help with?"
+    ]
+  };
 
   // Initialize chatbot
   function initChatbot() {
@@ -38,7 +65,7 @@
     });
 
     // Add welcome message
-    addMessage('bot', 'Hello! I\'m an AI assistant. How can I help you today?');
+    addMessage('bot', 'Hello! I\'m here to help you navigate this website. Feel free to ask me about Eddie\'s portfolio, experience, or how to contact him.');
   }
 
   function toggleChat() {
@@ -72,20 +99,50 @@
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
-  function showTyping(show) {
-    const typing = document.getElementById('typing-indicator');
-    if (show) {
-      typing.classList.add('active');
-    } else {
-      typing.classList.remove('active');
+  function getResponse(message) {
+    const msg = message.toLowerCase();
+    
+    // Check for greetings
+    if (/^(hi|hello|hey|greetings|good morning|good afternoon|good evening)/.test(msg)) {
+      return responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
     }
-    const messagesDiv = document.getElementById('chatbot-messages');
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+    // Check for thanks
+    if (/(thank|thanks|thx)/.test(msg)) {
+      return responses.thanks[Math.floor(Math.random() * responses.thanks.length)];
+    }
+    
+    // Check for about/who
+    if (/(who|about|tell me about|what|eddie|owner)/.test(msg)) {
+      return responses.about[Math.floor(Math.random() * responses.about.length)];
+    }
+    
+    // Check for portfolio
+    if (/(portfolio|work|project|sample)/.test(msg)) {
+      return responses.portfolio[Math.floor(Math.random() * responses.portfolio.length)];
+    }
+    
+    // Check for contact
+    if (/(contact|email|reach|touch|message)/.test(msg)) {
+      return responses.contact[Math.floor(Math.random() * responses.contact.length)];
+    }
+    
+    // Check for CV/resume
+    if (/(cv|resume|curriculum|qualification|education)/.test(msg)) {
+      return responses.cv[Math.floor(Math.random() * responses.cv.length)];
+    }
+    
+    // Check for experience
+    if (/(experience|background|career|job|work history)/.test(msg)) {
+      return responses.experience[Math.floor(Math.random() * responses.experience.length)];
+    }
+    
+    // Default response
+    return responses.default[Math.floor(Math.random() * responses.default.length)];
   }
 
-  async function sendMessage() {
+  function sendMessage() {
     const input = document.getElementById('chatbot-input');
-    const sendBtn = document.getElementById('chatbot-send');
     const message = input.value.trim();
     
     if (!message) return;
@@ -94,106 +151,11 @@
     addMessage('user', message);
     input.value = '';
     
-    // Disable input while processing
-    input.disabled = true;
-    sendBtn.disabled = true;
-    showTyping(true);
-    
-    try {
-      // Call Hugging Face API
-      const response = await queryHuggingFace(message);
-      showTyping(false);
+    // Get and add bot response with slight delay for natural feel
+    setTimeout(() => {
+      const response = getResponse(message);
       addMessage('bot', response);
-    } catch (error) {
-      showTyping(false);
-      console.error('Chatbot error:', error);
-      addMessage('bot', 'Sorry, I encountered an error. Please try again later. Note: The free API may have rate limits.');
-    } finally {
-      input.disabled = false;
-      sendBtn.disabled = false;
-      input.focus();
-    }
-  }
-
-  async function queryHuggingFace(message, retryCount = 0) {
-    // Build conversation context
-    conversationHistory.push({ role: 'user', content: message });
-    
-    // Keep only last 4 messages to avoid token limits
-    if (conversationHistory.length > 4) {
-      conversationHistory = conversationHistory.slice(-4);
-    }
-    
-    // Format prompt for DialoGPT (conversational model)
-    let prompt = conversationHistory
-      .map(msg => msg.content)
-      .join(' ');
-    
-    const apiUrl = CONFIG.apiUrl + CONFIG.model;
-    
-    try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          inputs: prompt,
-          parameters: {
-            max_length: CONFIG.maxTokens,
-            temperature: CONFIG.temperature,
-            top_p: 0.9,
-          },
-          options: {
-            wait_for_model: true,
-            use_cache: false
-          }
-        })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        
-        // If model is loading and we haven't exceeded retries
-        if (response.status === 503 && retryCount < CONFIG.maxRetries) {
-          const estimatedTime = errorData.estimated_time || CONFIG.retryDelay / 1000;
-          addMessage('bot', `Model is loading... Please wait ${Math.ceil(estimatedTime)} seconds.`);
-          await new Promise(resolve => setTimeout(resolve, CONFIG.retryDelay));
-          
-          // Remove the loading message
-          const messages = document.getElementById('chatbot-messages');
-          const lastMessage = messages.lastElementChild;
-          if (lastMessage) messages.removeChild(lastMessage);
-          
-          return queryHuggingFace(message, retryCount + 1);
-        }
-        
-        throw new Error(errorData.error || `API error (${response.status})`);
-      }
-
-      const data = await response.json();
-      
-      let botResponse = '';
-      if (Array.isArray(data) && data[0]?.generated_text) {
-        botResponse = data[0].generated_text.trim();
-      } else if (data.generated_text) {
-        botResponse = data.generated_text.trim();
-      } else {
-        throw new Error('Unexpected response format');
-      }
-      
-      // Extract only the new response (remove the input prompt)
-      botResponse = botResponse.replace(prompt, '').trim();
-      
-      // Store bot response in history
-      conversationHistory.push({ role: 'assistant', content: botResponse });
-      
-      return botResponse || 'I\'m here to help! What would you like to know?';
-    } catch (error) {
-      // Remove user message from history on error
-      conversationHistory.pop();
-      throw error;
-    }
+    }, 500);
   }
 
   // Initialize when DOM is ready
