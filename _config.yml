@@ -28,7 +28,16 @@ author:
   location         : "Boston, MA"
   employer         : "University of Limerick"
   uri              : # URL
-  email            : "eddiejjmorrissey@gmail.com" 
+  email            : "eddiejjmorrissey@gmail.com"
+  
+  # Education
+  education:
+    - "Saïd Business School, University of Oxford"
+    - "UC Berkeley, Haas School of Business"
+    - "IE Business School"
+    - "UCD Michael Smurfit Graduate Business School"
+    - "University of Galway"
+    - "University of Limerick" 
 
   # Academic websites
   arxiv            : # URL - Update with the correct link to your profile
