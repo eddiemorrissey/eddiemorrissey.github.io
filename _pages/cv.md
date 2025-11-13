@@ -11,17 +11,14 @@ redirect_from:
 
 Education
 ======
-* Executive Leadership Program: University of Oxford Saïd Business School			April 2021-Jul 2021
-    Modules Inc: Leading with Power and influence, Mastering complexity and polarity, leading for high performance
-* EMBA, Executive Master of Business Administration: University College Dublin			Aug 2017-Sep 2019
-    IE Business School High Tech Entrepreneurship, Grade Received: A
-    Haas School of Business, Berkeley Gender Equity and Leadership in the 21st Century, Grade Received: A+
-    Capstone, partnered with a consulting firm with annual revenues in excess of a billion, to develop a growth strategy for the firms supply chain services lines.
-* MSc, Biomedical Engineering: National University of Ireland Galway 				Sep 2013-May 2014
-    Thesis Addressing a clinical need for Stress Urinary Incontinence, as identified by BioInnovate.
-* BEng, Biomedical Engineering: University of Limerick 				 		Sep 2009-May 2013
-    Final Year Project Investigation of hemodynamic factors and their effect on Aneurysm formation.
-    Work Placement Creganna-Tactx Medical design services working on the development of a laparoscopic surgery set.
+* **Executive Leadership Programme**, Saïd Business School, University of Oxford
+* **Master of Business Administration - MBA Executive, Exchange Program**, University of California, Berkeley, Haas School of Business
+    Module Part of Executive MBA
+* **Master of Business Administration - MBA Executive, Exchange Program**, IE Business School
+    Module Part of Executive MBA
+* **Master of Business Administration - MBA Executive, Business**, UCD Michael Smurfit Graduate Business School
+* **Master's, Biomedical Engineering**, University of Galway
+* **Bachelor's Degree, Biomedical Engineering**, University of Limerick
 <!--
 Work experience
 ======
