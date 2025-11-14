@@ -34,11 +34,19 @@
 
 /* Adjust main content to accommodate chatbot pane */
 body {
+  margin-right: 0;
+}
+
+#main {
   margin-right: 350px;
 }
 
+.page {
+  margin-right: 0;
+}
+
 @media (max-width: 1200px) {
-  body {
+  #main {
     margin-right: 0;
   }
   
