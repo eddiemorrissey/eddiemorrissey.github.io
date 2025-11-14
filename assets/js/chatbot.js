@@ -3,7 +3,6 @@
   'use strict';
 
   let conversationHistory = [];
-  let isOpen = false;
 
   // Simple response patterns
   const responses = {
@@ -46,13 +45,11 @@
 
   // Initialize chatbot
   function initChatbot() {
-    const toggleBtn = document.getElementById('chatbot-toggle');
     const sendBtn = document.getElementById('chatbot-send');
     const input = document.getElementById('chatbot-input');
 
-    if (!toggleBtn) return;
+    if (!sendBtn) return;
 
-    toggleBtn.addEventListener('click', toggleChat);
     sendBtn.addEventListener('click', sendMessage);
     
     input.addEventListener('keypress', function(e) {
@@ -64,21 +61,6 @@
 
     // Add welcome message
     addMessage('bot', 'Hello! I\'m here to help you navigate this website. Feel free to ask me about Eddie\'s portfolio, experience, or how to contact him.');
-  }
-
-  function toggleChat() {
-    isOpen = !isOpen;
-    const window = document.getElementById('chatbot-window');
-    const toggleBtn = document.getElementById('chatbot-toggle');
-    
-    if (isOpen) {
-      window.classList.add('open');
-      toggleBtn.classList.add('open');
-      document.getElementById('chatbot-input').focus();
-    } else {
-      window.classList.remove('open');
-      toggleBtn.classList.remove('open');
-    }
   }
 
   function addMessage(type, text) {
