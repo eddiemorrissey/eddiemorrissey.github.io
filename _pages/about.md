@@ -1,10 +1,22 @@
 ---
 permalink: /
-title: "Overview of Me"
-author_profile: true
+layout: hero
+title: "Eddie Morrissey"
+hero_title: "Eddie Morrissey"
+hero_subtitle: "Medical Device Leader"
+hero_description: "Strategic leader in advancing medical technology, specializing in quality assurance and regulatory compliance. Proven track record in developing robust quality management systems meeting FDA regulations and ISO standards."
+hero_stats:
+  - number: "15+"
+    label: "Years Experience"
+  - number: "23"
+    label: "Zero-Defect Audits"
+  - number: "95%"
+    label: "CAPA Completion"
+author_profile: false
 redirect_from: 
   - /about/
   - /about.html
+classes: page--hero
 ---
 
 Strategic leader in advancing medical technology, specializing in quality assurance and regulatory compliance for medical devices. Proven track record in developing and implementing robust quality management systems (QMS) that meet FDA regulations (21 CFR 820) and ISO standards (ISO 13485, 14971). Experienced in leading global quality operations, design and development, site and product certification attainment, and integrating quality into business strategies. Skilled in leveraging AI and ML to enhance quality processes. Extensive experience in regulatory inspections (FDA & Notified bod), risk management, and supplier quality management. Committed to delivering safe and effective products through innovation and rigorous quality standards.

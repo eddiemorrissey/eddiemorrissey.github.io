@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+<div class="hero-container">
+  <div class="hero-content">
+    <div class="hero-image-wrapper">
+      <img src="{{ site.baseurl }}/images/profile.png" alt="{{ site.author.name }}" class="hero-image">
+    </div>
+    
+    <div class="hero-text">
+      <h1 class="hero-title">{{ page.hero_title | default: site.author.name }}</h1>
+      <p class="hero-subtitle">{{ page.hero_subtitle | default: site.author.bio }}</p>
+      <p class="hero-description">{{ page.hero_description }}</p>
+      
+      <div class="hero-cta">
+        <a href="{{ site.baseurl }}/cv/" class="hero-button hero-button-primary">View CV</a>
+        <a href="{{ site.baseurl }}/portfolio/" class="hero-button hero-button-secondary">See Portfolio</a>
+      </div>
+      
+      {% if page.hero_stats %}
+      <div class="hero-stats">
+        {% for stat in page.hero_stats %}
+        <div class="hero-stat">
+          <span class="hero-stat-number">{{ stat.number }}</span>
+          <span class="hero-stat-label">{{ stat.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
