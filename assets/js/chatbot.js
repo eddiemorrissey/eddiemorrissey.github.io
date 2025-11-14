@@ -46,15 +46,13 @@
 
   // Initialize chatbot
   function initChatbot() {
-    const button = document.getElementById('chatbot-button');
-    const closeBtn = document.getElementById('chatbot-close');
+    const toggleBtn = document.getElementById('chatbot-toggle');
     const sendBtn = document.getElementById('chatbot-send');
     const input = document.getElementById('chatbot-input');
 
-    if (!button) return;
+    if (!toggleBtn) return;
 
-    button.addEventListener('click', toggleChat);
-    closeBtn.addEventListener('click', toggleChat);
+    toggleBtn.addEventListener('click', toggleChat);
     sendBtn.addEventListener('click', sendMessage);
     
     input.addEventListener('keypress', function(e) {
@@ -71,11 +69,15 @@
   function toggleChat() {
     isOpen = !isOpen;
     const window = document.getElementById('chatbot-window');
+    const toggleBtn = document.getElementById('chatbot-toggle');
+    
     if (isOpen) {
       window.classList.add('open');
+      toggleBtn.classList.add('open');
       document.getElementById('chatbot-input').focus();
     } else {
       window.classList.remove('open');
+      toggleBtn.classList.remove('open');
     }
   }
 
