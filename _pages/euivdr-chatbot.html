@@ -1,0 +1,387 @@
+---
+layout: default
+title: "EU IVDR LLM Assistant"
+permalink: /portfolio/euivdr-chatbot/
+---
+
+<style>
+    #main {
+        margin-right: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .page__content {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .euivdr-chat-container {
+        width: 100%;
+        height: calc(100vh - 80px);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .euivdr-chat-box {
+        width: 100%;
+        max-width: 900px;
+        height: 700px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .euivdr-chat-header {
+        background: #2c3e50;
+        color: white;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .euivdr-chat-header h1 {
+        font-size: 28px;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .euivdr-chat-header p {
+        font-size: 15px;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .euivdr-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 25px;
+        background: #f8f9fa;
+    }
+
+    .euivdr-message {
+        margin-bottom: 18px;
+        display: flex;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .euivdr-message.user {
+        justify-content: flex-end;
+    }
+
+    .euivdr-message-content {
+        max-width: 75%;
+        padding: 14px 18px;
+        border-radius: 18px;
+        line-height: 1.6;
+        font-size: 15px;
+    }
+
+    .euivdr-message.user .euivdr-message-content {
+        background: #2c3e50;
+        color: white;
+    }
+
+    .euivdr-message.bot .euivdr-message-content {
+        background: white;
+        color: #333;
+        border: 1px solid #e0e0e0;
+    }
+
+    .euivdr-chat-input-container {
+        padding: 25px;
+        background: white;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .euivdr-chat-input-form {
+        display: flex;
+        gap: 12px;
+    }
+
+    #euivdrMessageInput {
+        flex: 1;
+        padding: 14px 18px;
+        border: 2px solid #e0e0e0;
+        border-radius: 24px;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.3s;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    #euivdrMessageInput:focus {
+        border-color: #2c3e50;
+    }
+
+    #euivdrSendButton {
+        padding: 14px 36px;
+        background: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 24px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.3s;
+        font-weight: 600;
+    }
+
+    #euivdrSendButton:hover {
+        background: #34495e;
+    }
+
+    #euivdrSendButton:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+    }
+
+    .euivdr-typing-indicator {
+        display: none;
+        padding: 14px 18px;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 18px;
+        max-width: 70px;
+    }
+
+    .euivdr-typing-indicator.active {
+        display: block;
+    }
+
+    .euivdr-typing-indicator span {
+        height: 8px;
+        width: 8px;
+        background: #95a5a6;
+        display: inline-block;
+        border-radius: 50%;
+        margin-right: 4px;
+        animation: typing 1.4s infinite;
+    }
+
+    .euivdr-typing-indicator span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .euivdr-typing-indicator span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+        0%, 60%, 100% {
+            transform: translateY(0);
+        }
+        30% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .euivdr-chat-messages::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .euivdr-chat-messages::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .euivdr-chat-messages::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .euivdr-chat-messages::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    @media (max-width: 768px) {
+        .euivdr-chat-box {
+            height: calc(100vh - 100px);
+        }
+
+        .euivdr-message-content {
+            max-width: 85%;
+        }
+    }
+</style>
+
+<div class="euivdr-chat-container">
+    <div class="euivdr-chat-box">
+        <div class="euivdr-chat-header">
+            <h1>EU IVDR LLM Assistant</h1>
+            <p>AI-powered regulatory compliance guidance for In Vitro Diagnostic Regulation</p>
+        </div>
+        
+        <div class="euivdr-chat-messages" id="euivdrChatMessages">
+            <div class="euivdr-message bot">
+                <div class="euivdr-message-content">
+                    Welcome! I'm your EU IVDR compliance assistant. I can help you understand In Vitro Diagnostic Regulation requirements including:
+                    <br><br>
+                    • Device classification (Classes A, B, C, D)<br>
+                    • Conformity assessment procedures<br>
+                    • Technical documentation requirements<br>
+                    • Clinical evidence and performance evaluation<br>
+                    • UDI registration and EUDAMED<br>
+                    • Vigilance and post-market surveillance<br>
+                    • Transition timelines and deadlines<br>
+                    • Notified body requirements<br>
+                    • Quality management systems (ISO 13485)
+                    <br><br>
+                    How can I assist you today?
+                </div>
+            </div>
+        </div>
+        
+        <div class="euivdr-chat-input-container">
+            <form class="euivdr-chat-input-form" id="euivdrChatForm">
+                <input 
+                    type="text" 
+                    id="euivdrMessageInput" 
+                    placeholder="Ask about EU IVDR regulations..."
+                    autocomplete="off"
+                >
+                <button type="submit" id="euivdrSendButton">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const IVDR_KNOWLEDGE = {
+        'classification': {
+            keywords: ['class', 'classification', 'classify', 'category', 'categories'],
+            response: 'EU IVDR classifies IVDs into four risk-based classes:\n\n• Class A (lowest risk): General laboratory equipment, self-test devices for low-risk conditions\n• Class B: Devices for detection of infectious diseases not in Class C/D, blood grouping\n• Class C: Devices for detecting serious diseases with significant public health impact\n• Class D (highest risk): Devices for detecting HIV, blood-transmissible agents, companion diagnostics for life-threatening conditions\n\nClassification depends on intended purpose, risk to patient/public health, and whether used for screening, diagnosis, or monitoring.'
+        },
+        'conformity': {
+            keywords: ['conformity assessment', 'conformity', 'certification', 'ce mark'],
+            response: 'Conformity assessment procedures vary by device class:\n\n• Class A (non-sterile, no measuring function): Self-declaration based on Annex III\n• Class A (sterile/measuring): Annex II (full QMS) or Annex III Part A + specific modules\n• Class B: Annex II or Annex III Part B + specific modules\n• Class C: Annex II or Annex IX (Type examination) + specific modules\n• Class D: Annex II (full quality assurance) - most stringent\n\nAll except lowest-risk Class A devices require Notified Body involvement.'
+        },
+        'technical documentation': {
+            keywords: ['technical documentation', 'technical file', 'documentation', 'documents required'],
+            response: 'Technical documentation must include:\n\n1. Device description and specifications\n2. Design and manufacturing information\n3. General safety and performance requirements\n4. Benefit-risk analysis and risk management\n5. Product verification and validation\n6. Clinical evidence including performance evaluation\n7. Labels and instructions for use\n8. Post-market surveillance plan\n9. Clinical performance studies (if applicable)\n10. Quality management system documentation\n\nDocumentation must be maintained for minimum 10 years after last device placed on market.'
+        },
+        'clinical evidence': {
+            keywords: ['clinical evidence', 'clinical performance', 'clinical study', 'clinical data'],
+            response: 'Clinical evidence requirements:\n\n• Demonstrate scientific validity, analytical performance, and clinical performance\n• Higher-risk devices (C/D) require more extensive clinical evidence\n• May include clinical performance studies, scientific literature, or real-world data\n• Performance evaluation report required for all devices\n• Must address intended use, target population, and clinical benefits\n• Ongoing surveillance to confirm performance over product lifecycle\n\nAnnex XIII provides detailed requirements for clinical evidence and performance studies.'
+        },
+        'performance evaluation': {
+            keywords: ['performance evaluation', 'performance study', 'analytical performance'],
+            response: 'Performance evaluation must demonstrate:\n\n1. Scientific validity - biological/clinical relationship is valid\n2. Analytical performance - accurately detects/measures target analyte\n3. Clinical performance - achieves intended purpose in target population\n\nKey elements:\n• Performance evaluation plan before market entry\n• Performance evaluation report documenting all evidence\n• Continuous updates throughout product lifecycle\n• May require performance studies or rely on existing data\n• More rigorous for higher-risk devices'
+        },
+        'udi': {
+            keywords: ['udi', 'unique device identifier', 'eudamed', 'database', 'registration'],
+            response: 'UDI and EUDAMED requirements:\n\n• All IVDs must have Unique Device Identifier (UDI)\n• UDI consists of device identifier (UDI-DI) and production identifier (UDI-PI)\n• Must be registered in European Database (EUDAMED)\n• EUDAMED modules include: actors, UDI/devices, notified bodies, certificates, clinical investigations, vigilance, market surveillance\n• UDI must appear on device label and packaging\n• Enables traceability throughout supply chain\n\nEUDAMED provides transparency and information sharing among stakeholders.'
+        },
+        'vigilance': {
+            keywords: ['vigilance', 'incident', 'serious incident', 'field safety', 'recall'],
+            response: 'Vigilance and post-market surveillance:\n\n• Manufacturers must report serious incidents immediately (within 15 days)\n• Serious incident: Death, serious deterioration in health, serious public health threat\n• Field Safety Corrective Actions (FSCA) must be reported\n• Post-market surveillance system required (Annex III)\n• Periodic Safety Update Reports (PSUR) for certain devices\n• Trend reporting for incidents that individually are not reportable\n• Competent authorities investigate and may require corrective actions\n\nVigilance ensures rapid response to safety issues.'
+        },
+        'transition': {
+            keywords: ['transition', 'deadline', 'timeline', 'ivdd', 'grace period'],
+            response: 'EU IVDR transition timeline:\n\n• IVDR entered into force: May 26, 2017\n• Application date: May 26, 2022 (IVDD repealed)\n• Transition periods for legacy devices:\n  - Class D: May 26, 2025\n  - Class C: May 26, 2026\n  - Class B: May 26, 2027\n  - Class A: May 26, 2028\n\n• Devices certified under IVDD can remain on market during transition if:\n  - No significant changes\n  - Continued compliance demonstrated\n  - Notified Body support maintained\n\nManufacturers should prioritize IVDR compliance - don\'t wait for deadlines!'
+        },
+        'notified body': {
+            keywords: ['notified body', 'nb', 'certification body', 'designate'],
+            response: 'Notified Body requirements:\n\n• Required for all devices except Class A (non-sterile, non-measuring)\n• Notified Bodies designated by national competent authorities\n• Shortage of designated NBs under IVDR - plan early!\n• NB responsibilities include:\n  - Technical documentation review\n  - Quality management system assessment\n  - Manufacturing site audits\n  - Batch testing for specific devices\n  - Issuing EU certificates\n\n• Choose NB with relevant expertise for your device type\n• Establish relationship early - long wait times for new certifications'
+        },
+        'qms': {
+            keywords: ['qms', 'quality management', 'iso 13485', 'quality system'],
+            response: 'Quality Management System requirements:\n\n• ISO 13485:2016 compliance required\n• Must address IVDR-specific requirements (Annex IX)\n• Key elements:\n  - Management responsibility\n  - Resource management\n  - Product realization including design controls\n  - Risk management per ISO 14971\n  - Post-market surveillance\n  - Corrective and preventive actions (CAPA)\n  - Document and record control\n  - Internal audits\n  - Management review\n\n• QMS must be established before placing devices on market\n• Regular audits by Notified Body for certified devices'
+        },
+        'annexes': {
+            keywords: ['annex', 'annexes', 'appendix'],
+            response: 'Key IVDR Annexes:\n\n• Annex I: General safety and performance requirements\n• Annex II: Technical documentation\n• Annex III: Technical documentation on post-market surveillance\n• Annex IV: EU declaration of conformity\n• Annex IX: Conformity assessment - quality management system\n• Annex XIII: Clinical evidence, performance studies\n\nAnnexes provide detailed requirements for compliance with core regulation.'
+        }
+    };
+
+    const chatForm = document.getElementById('euivdrChatForm');
+    const messageInput = document.getElementById('euivdrMessageInput');
+    const chatMessages = document.getElementById('euivdrChatMessages');
+    const sendButton = document.getElementById('euivdrSendButton');
+
+    function getIVDRResponse(message) {
+        const messageLower = message.toLowerCase();
+        
+        for (const [topic, data] of Object.entries(IVDR_KNOWLEDGE)) {
+            for (const keyword of data.keywords) {
+                if (messageLower.includes(keyword)) {
+                    return data.response;
+                }
+            }
+        }
+        
+        return "I can help with EU IVDR topics including:\n\n• Device classification\n• Conformity assessment\n• Technical documentation\n• Clinical evidence and performance evaluation\n• UDI registration and EUDAMED\n• Vigilance reporting\n• Transition timelines\n• Notified body requirements\n• Quality management systems\n• Regulatory annexes\n\nPlease ask about any of these topics, or phrase your question differently!";
+    }
+
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, 'user');
+        messageInput.value = '';
+
+        const typingIndicator = addTypingIndicator();
+        messageInput.disabled = true;
+        sendButton.disabled = true;
+
+        setTimeout(() => {
+            typingIndicator.remove();
+            const response = getIVDRResponse(message);
+            addMessage(response, 'bot');
+            
+            messageInput.disabled = false;
+            sendButton.disabled = false;
+            messageInput.focus();
+        }, 800);
+    });
+
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `euivdr-message ${sender}`;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'euivdr-message-content';
+        contentDiv.innerHTML = text.replace(/\n/g, '<br>');
+        
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+        
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        return messageDiv;
+    }
+
+    function addTypingIndicator() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'euivdr-message bot';
+        
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'euivdr-typing-indicator active';
+        typingDiv.innerHTML = '<span></span><span></span><span></span>';
+        
+        messageDiv.appendChild(typingDiv);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        return messageDiv;
+    }
+
+    messageInput.focus();
+})();
+</script>
