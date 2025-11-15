@@ -6,4 +6,4 @@ collection: portfolio
 
 An advanced language model application designed to assist with EU IVDR compliance requirements, regulatory documentation, and quality management workflows.
 
-[Click here to access the interactive chatbot assistant](/portfolio/euivdr-chatbot/) 
+[Click here to access the interactive chatbot assistant](/euivdr-llm/) 
