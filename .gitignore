@@ -10,3 +10,9 @@ Gemfile.lock
 # Ingore files created by npm
 node_modules
 package-lock.json
+
+# Python virtual environments
+flask-chatbot/venv/
+venv/
+*.pyc
+__pycache__/
