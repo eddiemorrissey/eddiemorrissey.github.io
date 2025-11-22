@@ -343,9 +343,7 @@ author_profile: false
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    inputs: `<s>[INST] You are an expert EU IVDR (In Vitro Diagnostic Regulation) compliance assistant. Provide accurate, detailed answers about EU IVDR requirements, classifications, conformity assessment, technical documentation, clinical evidence, UDI registration, vigilance, and quality management systems. Keep responses concise but informative.
-
-User question: ${message} [/INST]`,
+                    inputs: `<s>[INST] ${message} [/INST]`,
                     parameters: {
                         max_new_tokens: 500,
                         temperature: 0.7,
