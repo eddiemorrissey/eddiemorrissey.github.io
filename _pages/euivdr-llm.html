@@ -303,10 +303,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    console.log('IVDR Chatbot script loaded');
+    
     const chatForm = document.getElementById('euivdrChatForm');
     const messageInput = document.getElementById('euivdrMessageInput');
     const chatMessages = document.getElementById('euivdrChatMessages');
     const sendButton = document.getElementById('euivdrSendButton');
+
+    console.log('Form elements:', {chatForm, messageInput, chatMessages, sendButton});
+
+    if (!chatForm || !messageInput || !chatMessages || !sendButton) {
+        console.error('One or more form elements not found!');
+        return;
+    }
 
     function getIVDRResponse(message) {
         const messageLower = message.toLowerCase();
@@ -324,6 +333,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        
+        console.log('Form submitted');
         
         const message = messageInput.value.trim();
         if (!message) return;
