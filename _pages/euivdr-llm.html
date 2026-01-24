@@ -51,6 +51,29 @@ author_profile: false
         margin: 0;
     }
 
+    /* Status badge */
+    .euivdr-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        font-size: 12px;
+        color: #ffffff;
+        background: #6b7280; /* neutral */
+        padding: 6px 10px;
+        border-radius: 999px;
+    }
+    .euivdr-status.ok { background: #16a34a; }
+    .euivdr-status.warn { background: #ea580c; }
+    .euivdr-status.err { background: #dc2626; }
+    .euivdr-status .dot {
+        width: 8px;
+        height: 8px;
+        background: currentColor;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
     .euivdr-chat-messages {
         flex: 1;
         overflow-y: auto;
@@ -218,6 +241,7 @@ author_profile: false
         <div class="euivdr-chat-header">
             <h1>EU IVDR LLM Assistant</h1>
             <p>AI-powered regulatory compliance guidance for In Vitro Diagnostic Regulation</p>
+            <div id="euivdrStatus" class="euivdr-status" aria-live="polite"><span class="dot"></span> Connecting to Pi…</div>
         </div>
         
         <div class="euivdr-chat-messages" id="euivdrChatMessages">
@@ -256,6 +280,8 @@ author_profile: false
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const BASE_URL = '{{ site.ivdr_pi_base_url }}';
+    const CFG_MODEL = '{{ site.ivdr_model | default: "" }}';
     const IVDR_KNOWLEDGE = {
         'classification': {
             keywords: ['class', 'classification', 'classify', 'category', 'categories'],
@@ -331,6 +357,30 @@ document.addEventListener('DOMContentLoaded', function() {
         return "I can help with EU IVDR topics including:\n\n• Device classification\n• Conformity assessment\n• Technical documentation\n• Clinical evidence and performance evaluation\n• UDI registration and EUDAMED\n• Vigilance reporting\n• Transition timelines\n• Notified body requirements\n• Quality management systems\n• Regulatory annexes\n\nPlease ask about any of these topics, or phrase your question differently!";
     }
 
+    // Update status from Pi health endpoint
+    (async () => {
+        const badge = document.getElementById('euivdrStatus');
+        try {
+            const r = await fetch(`${BASE_URL}/health`, { cache: 'no-store' });
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            const h = await r.json();
+            if (h && h.ollama) {
+                badge.classList.remove('warn','err');
+                badge.classList.add('ok');
+                const model = (h.model || CFG_MODEL || '').trim();
+                badge.innerHTML = `<span class="dot"></span> Pi connected • Model: ${model || 'unknown'}`;
+            } else {
+                badge.classList.remove('ok');
+                badge.classList.add('warn');
+                badge.innerHTML = '<span class="dot"></span> Pi reachable? Using fallback if needed';
+            }
+        } catch (e) {
+            badge.classList.remove('ok');
+            badge.classList.add('err');
+            badge.innerHTML = '<span class="dot"></span> Pi unreachable — using fallback responses';
+        }
+    })();
+
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -349,14 +399,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             // Try local Raspberry Pi API first (config-driven)
-            const response = await fetch('{{ site.ivdr_pi_base_url }}/chat', {
+            const response = await fetch(`${BASE_URL}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ 
                     message,
-                    model: '{{ site.ivdr_model | default: "" }}'
+                    model: CFG_MODEL
                 })
             });
 
@@ -365,6 +415,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (data && data.response) {
                 addMessage(data.response, 'bot');
+                // Update badge with model used, if provided
+                const badge = document.getElementById('euivdrStatus');
+                if (badge && data.model) {
+                    badge.classList.remove('warn','err');
+                    badge.classList.add('ok');
+                    badge.innerHTML = `<span class="dot"></span> Pi connected • Model: ${data.model}`;
+                }
             } else {
                 const fallbackResponse = getIVDRResponse(message);
                 addMessage(fallbackResponse, 'bot');
