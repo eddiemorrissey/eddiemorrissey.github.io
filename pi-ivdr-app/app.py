@@ -19,12 +19,13 @@ SYSTEM_PROMPT = (
     "the official IVDR text or competent authority guidance."
 )
 
-def ollama_generate(prompt: str) -> str:
+def ollama_generate(prompt: str, model_override: str | None = None) -> str:
     try:
+        model = (model_override or OLLAMA_MODEL).strip() or OLLAMA_MODEL
         resp = requests.post(
             f"{OLLAMA_HOST}/api/generate",
             json={
-                "model": OLLAMA_MODEL,
+                "model": model,
                 "prompt": prompt,
                 "stream": False,
             },
@@ -58,13 +59,15 @@ def health():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_message = (request.json or {}).get('message', '').strip()
+    payload = request.json or {}
+    user_message = str(payload.get('message', '')).strip()
+    model_req = str(payload.get('model', '')).strip() or None
     if not user_message:
         return jsonify({'response': 'Please enter a message.'})
 
     prompt = build_prompt(user_message)
-    response = ollama_generate(prompt)
-    return jsonify({'response': response})
+    response = ollama_generate(prompt, model_override=model_req)
+    return jsonify({'response': response, 'model': model_req or OLLAMA_MODEL})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))

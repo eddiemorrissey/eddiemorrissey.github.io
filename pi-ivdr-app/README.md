@@ -50,7 +50,7 @@ curl -X POST http://<PI_IP>:5001/chat \
   -d '{"message": "Explain IVDR device classes"}'
 ```
 
-Your website page `_pages/euivdr-llm.html` already calls `http://<PI_IP>:5001/chat` first. Update the IP if needed.
+Your website page `_pages/euivdr-llm.html` already calls `http://<PI_IP>:5001/chat` first. Update the IP in `_config.yml` (`ivdr_pi_base_url`). The site also passes `model` from `_config.yml` (`ivdr_model`) so you can switch models without editing code.
 
 ## Optional: systemd service
 Create `/etc/systemd/system/ivdr.service`:

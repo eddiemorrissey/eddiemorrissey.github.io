@@ -354,7 +354,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message })
+                body: JSON.stringify({ 
+                    message,
+                    model: '{{ site.ivdr_model | default: "" }}'
+                })
             });
 
             const data = await response.json();
