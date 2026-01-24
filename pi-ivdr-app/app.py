@@ -6,6 +6,18 @@ import requests
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
+# Private Network Access: ensure preflight includes required header
+@app.after_request
+def add_pna_header(response):
+    # Allow access from HTTPS page to private network if browser supports PNA
+    response.headers['Access-Control-Allow-Private-Network'] = 'true'
+    # Ensure CORS header present for fetch() from GitHub Pages
+    if 'Access-Control-Allow-Origin' not in response.headers:
+        response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = response.headers.get('Access-Control-Allow-Headers', 'Content-Type')
+    response.headers['Access-Control-Allow-Methods'] = response.headers.get('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    return response
+
 # Ollama configuration (runs locally on the Raspberry Pi)
 OLLAMA_HOST = os.environ.get('OLLAMA_HOST', 'http://localhost:11434')
 OLLAMA_MODEL = os.environ.get('OLLAMA_MODEL', 'phi3:mini')

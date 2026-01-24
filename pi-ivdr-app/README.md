@@ -52,6 +52,37 @@ curl -X POST http://<PI_IP>:5001/chat \
 
 Your website page `_pages/euivdr-llm.html` already calls `http://<PI_IP>:5001/chat` first. Update the IP in `_config.yml` (`ivdr_pi_base_url`). The site also passes `model` from `_config.yml` (`ivdr_model`) so you can switch models without editing code.
 
+## Important: HTTPS pages cannot call HTTP Pi directly
+GitHub Pages serves your site over HTTPS. Browsers block requests from HTTPS pages to `http://` private network URLs (mixed content + Private Network Access). To make the page reach your Pi:
+
+- Option A (recommended): expose the Pi API via an HTTPS tunnel and set `ivdr_pi_base_url` to that URL.
+  - Cloudflare Tunnel:
+    ```bash
+    # On the Pi
+    curl -fsSL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64.deb -o cloudflared.deb
+    sudo dpkg -i cloudflared.deb
+    # Authenticate and create a tunnel mapped to localhost:5001
+    cloudflared tunnel login
+    cloudflared tunnel create ivdr
+    cloudflared tunnel route dns ivdr <your-domain>  # or use trycloudflare for a temporary URL
+    # Config: /etc/cloudflared/config.yml
+    sudo tee /etc/cloudflared/config.yml <<'YML'
+    tunnel: ivdr
+    credentials-file: /root/.cloudflared/ivdr.json
+    ingress:
+      - hostname: ivdr.<your-domain>
+        service: http://localhost:5001
+      - service: http_status:404
+    YML
+    sudo systemctl enable cloudflared
+    sudo systemctl start cloudflared
+    ```
+  - Set `ivdr_pi_base_url: "https://ivdr.<your-domain>"` in `_config.yml`.
+
+- Option B: run the site locally (HTTP) for testing: `bundle exec jekyll serve` — then HTTP→HTTP works.
+
+This repo’s Flask app now includes `Access-Control-Allow-Private-Network: true`, but browsers still block HTTPS→HTTP. Use HTTPS on the Pi endpoint for production.
+
 ## Optional: systemd service
 Create `/etc/systemd/system/ivdr.service`:
 ```ini
