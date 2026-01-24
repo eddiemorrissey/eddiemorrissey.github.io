@@ -83,6 +83,69 @@ GitHub Pages serves your site over HTTPS. Browsers block requests from HTTPS pag
 
 This repo’s Flask app now includes `Access-Control-Allow-Private-Network: true`, but browsers still block HTTPS→HTTP. Use HTTPS on the Pi endpoint for production.
 
+## Alternative backend: llama.cpp (CPU-friendly)
+You can run Phi-3 Mini in llama.cpp and point the API to it instead of Ollama.
+
+### Install llama.cpp and a Phi-3 gguf on the Pi
+```bash
+sudo apt update
+sudo apt install -y git build-essential cmake
+
+# Build llama.cpp
+git clone https://github.com/ggerganov/llama.cpp.git
+cd llama.cpp
+make -j$(nproc)
+
+# Download a quantized Phi-3 Mini gguf (example Q4_K_M)
+mkdir -p ~/models/phi3
+cd ~/models/phi3
+# Example source (pick one you trust)
+wget https://huggingface.co/TheBloke/Phi-3-mini-4k-instruct-GGUF/resolve/main/phi-3-mini-4k-instruct.Q4_K_M.gguf -O phi3-mini-4k-instruct-q4_k_m.gguf
+
+# Start the llama.cpp server
+~/llama.cpp/server -m ~/models/phi3/phi3-mini-4k-instruct-q4_k_m.gguf --host 0.0.0.0 --port 8080 --ctx-size 4096
+```
+
+Test the server:
+```bash
+curl http://localhost:8080/v1/models
+curl -X POST http://localhost:8080/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"messages":[{"role":"system","content":"You are IVDR expert."},{"role":"user","content":"Explain device classes"}]}'
+```
+
+### Point the Flask API to llama.cpp
+```bash
+export BACKEND=llamacpp
+export LLAMACPP_HOST=http://localhost:8080
+export PORT=5001
+python app.py
+```
+
+Your website continues calling the same Flask `/chat` endpoint; the Flask app forwards to llama.cpp.
+
+### Optional: systemd service for llama.cpp
+```ini
+[Unit]
+Description=llama.cpp Phi-3 Mini server
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/home/pi/llama.cpp/server -m /home/pi/models/phi3/phi3-mini-4k-instruct-q4_k_m.gguf --host 0.0.0.0 --port 8080 --ctx-size 4096
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+Enable:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable llama-phi3
+sudo systemctl start llama-phi3
+```
+
 ## Optional: systemd service
 Create `/etc/systemd/system/ivdr.service`:
 ```ini
