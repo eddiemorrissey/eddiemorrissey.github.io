@@ -73,6 +73,12 @@ author_profile: false
         border-radius: 50%;
         display: inline-block;
     }
+    .euivdr-status a {
+        color: #fff;
+        text-decoration: underline;
+        opacity: 0.9;
+    }
+    .euivdr-status a:hover { opacity: 1; }
 
     .euivdr-chat-messages {
         flex: 1;
@@ -357,8 +363,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return "I can help with EU IVDR topics including:\n\n• Device classification\n• Conformity assessment\n• Technical documentation\n• Clinical evidence and performance evaluation\n• UDI registration and EUDAMED\n• Vigilance reporting\n• Transition timelines\n• Notified body requirements\n• Quality management systems\n• Regulatory annexes\n\nPlease ask about any of these topics, or phrase your question differently!";
     }
 
-    // Update status from Pi health endpoint
-    (async () => {
+    // Update status from Pi health endpoint + provide retry
+    async function updateStatus() {
         const badge = document.getElementById('euivdrStatus');
         try {
             const r = await fetch(`${BASE_URL}/health`, { cache: 'no-store' });
@@ -368,18 +374,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 badge.classList.remove('warn','err');
                 badge.classList.add('ok');
                 const model = (h.model || CFG_MODEL || '').trim();
-                badge.innerHTML = `<span class="dot"></span> Pi connected • Model: ${model || 'unknown'}`;
+                badge.innerHTML = `<span class=\"dot\"></span> Pi connected • Model: ${model || 'unknown'} · <a href=\"#\" id=\"euivdrRetry\">Retry</a>`;
             } else {
                 badge.classList.remove('ok');
                 badge.classList.add('warn');
-                badge.innerHTML = '<span class="dot"></span> Pi reachable? Using fallback if needed';
+                badge.innerHTML = '<span class=\"dot\"></span> Pi reachable? Using fallback if needed · <a href=\"#\" id=\"euivdrRetry\">Retry</a>';
             }
         } catch (e) {
+            const badge = document.getElementById('euivdrStatus');
             badge.classList.remove('ok');
             badge.classList.add('err');
-            badge.innerHTML = '<span class="dot"></span> Pi unreachable — using fallback responses';
+            badge.innerHTML = '<span class=\"dot\"></span> Pi unreachable — using fallback responses · <a href=\"#\" id=\"euivdrRetry\">Retry</a>';
+        } finally {
+            // Wire up retry if link exists
+            const retry = document.getElementById('euivdrRetry');
+            if (retry) {
+                retry.addEventListener('click', (e) => { e.preventDefault(); updateStatus(); });
+            }
         }
-    })();
+    }
+    updateStatus();
 
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
