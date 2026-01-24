@@ -16,3 +16,10 @@ flask-chatbot/venv/
 venv/
 *.pyc
 __pycache__/
+
+# macOS system files
+.DS_Store
+
+# Jekyll caches
+.jekyll-cache/
+.sass-cache/
