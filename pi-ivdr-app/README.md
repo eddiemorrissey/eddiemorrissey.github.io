@@ -13,8 +13,10 @@ curl -fsSL https://ollama.com/install.sh | sh
 sudo systemctl enable ollama
 sudo systemctl start ollama
 # Pull a small model suitable for Pi
-ollama pull qwen2.5:0.5b
-# Optional alternative
+# Preferred model for Pi
+ollama pull phi3:mini
+# Optional alternatives
+# ollama pull qwen2.5:0.5b
 # ollama pull llama3.2:1b
 ```
 
@@ -34,7 +36,7 @@ pip install -r requirements.txt
 ## Run the server
 ```bash
 export OLLAMA_HOST=http://localhost:11434
-export OLLAMA_MODEL=qwen2.5:0.5b
+export OLLAMA_MODEL=phi3:mini
 export PORT=5001
 python app.py
 ```

@@ -8,7 +8,7 @@ CORS(app)  # Enable CORS for all routes
 
 # Ollama configuration (runs locally on the Raspberry Pi)
 OLLAMA_HOST = os.environ.get('OLLAMA_HOST', 'http://localhost:11434')
-OLLAMA_MODEL = os.environ.get('OLLAMA_MODEL', 'qwen2.5:0.5b')
+OLLAMA_MODEL = os.environ.get('OLLAMA_MODEL', 'phi3:mini')
 
 SYSTEM_PROMPT = (
     "You are an expert EU IVDR (In Vitro Diagnostic Regulation) compliance assistant. "
@@ -50,9 +50,11 @@ def health():
     try:
         r = requests.get(f"{OLLAMA_HOST}/api/tags", timeout=5)
         ok = r.status_code == 200
+        tags = r.json().get('models', []) if ok else []
     except Exception:
         ok = False
-    return jsonify({'status': 'healthy', 'ollama': ok, 'model': OLLAMA_MODEL})
+        tags = []
+    return jsonify({'status': 'healthy', 'ollama': ok, 'model': OLLAMA_MODEL, 'available_models': tags})
 
 @app.route('/chat', methods=['POST'])
 def chat():
