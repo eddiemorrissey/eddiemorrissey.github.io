@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function() {
         sendButton.disabled = true;
 
         try {
-            // Try local Raspberry Pi API first
+            // Try local Raspberry Pi API first (update IP as needed)
             const response = await fetch('http://10.0.0.117:5001/chat', {
                 method: 'POST',
                 headers: {
