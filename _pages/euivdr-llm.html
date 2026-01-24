@@ -73,6 +73,17 @@ author_profile: false
         border-radius: 50%;
         display: inline-block;
     }
+    /* Spinner for active checks */
+    .euivdr-status .spinner {
+        width: 12px;
+        height: 12px;
+        border: 2px solid rgba(255,255,255,0.5);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        display: inline-block;
+        animation: euivdr-spin 0.8s linear infinite;
+    }
+    @keyframes euivdr-spin { to { transform: rotate(360deg); } }
     .euivdr-status a {
         color: #fff;
         text-decoration: underline;
@@ -366,6 +377,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update status from Pi health endpoint + provide retry
     async function updateStatus() {
         const badge = document.getElementById('euivdrStatus');
+        // Show spinner while checking
+        badge.classList.remove('ok','warn','err');
+        badge.innerHTML = '<span class="spinner"></span> Checking Pi…';
         try {
             const r = await fetch(`${BASE_URL}/health`, { cache: 'no-store' });
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -381,7 +395,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 badge.innerHTML = '<span class=\"dot\"></span> Pi reachable? Using fallback if needed · <a href=\"#\" id=\"euivdrRetry\">Retry</a>';
             }
         } catch (e) {
-            const badge = document.getElementById('euivdrStatus');
             badge.classList.remove('ok');
             badge.classList.add('err');
             badge.innerHTML = '<span class=\"dot\"></span> Pi unreachable — using fallback responses · <a href=\"#\" id=\"euivdrRetry\">Retry</a>';
