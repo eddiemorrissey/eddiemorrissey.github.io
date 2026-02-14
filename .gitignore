@@ -17,6 +17,10 @@ venv/
 *.pyc
 __pycache__/
 
+# Add workspace virtual envs
+.venv/
+pi-ivdr-app/.venv/
+
 # macOS system files
 .DS_Store
 
