@@ -27,3 +27,5 @@ pi-ivdr-app/.venv/
 # Jekyll caches
 .jekyll-cache/
 .sass-cache/
+# Local nested repos
+llama.cpp/
