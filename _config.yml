@@ -311,7 +311,7 @@ whitelist:
 # Custom Settings
 # Base URL of your Raspberry Pi IVDR API. Change here instead of editing pages.
 ivdr_pi_base_url: "https://arise-oaks-reno-informative.trycloudflare.com"
-ivdr_model: "phi3:mini"
+ivdr_model: "qwen2.5:0.5b"
 
 
 # Archives
