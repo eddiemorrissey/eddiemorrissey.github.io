@@ -9,6 +9,14 @@ redirect_from:
 
 {% include base_path %}
 
+Achievements
+======
+* Recipient of **Werfen Leadership & Management Excellence Award**.
+* Recipient of **NuVasive Cheetah Quarterly Award** (EMEA).
+* Finalist in **Universitas 21** global competition.
+* Selected university representative for **PwC Innovation Challenge**.
+* Recipient of **Newstalk MBA bursary** for UCD Smurfit Business School.
+
 Professional Summary
 ======
 Strategic quality and regulatory leader in medical technology, with experience scaling QMS aligned to FDA 21 CFR 820 and ISO 13485/14971. Proven in global quality operations, inspection readiness, risk management, and AI/ML-enabled quality improvement.
@@ -84,11 +92,3 @@ Volunteer & Project Work
 * Supported initiatives with Kiva, NuVasive Racial Equality Task Force, and Irish Medtech Association (Ibec).
 * Delivered market feasibility and market-entry support for Accessible Mojo, Thula, and Steth.ai.
 * Contributed to child wellbeing support work in Tulsa.
-
-Accomplishments
-======
-* Recipient of **Werfen Leadership & Management Excellence Award**.
-* Recipient of **NuVasive Cheetah Quarterly Award** (EMEA).
-* Finalist in **Universitas 21** global competition.
-* Selected university representative for **PwC Innovation Challenge**.
-* Recipient of **Newstalk MBA bursary** for UCD Smurfit Business School.
