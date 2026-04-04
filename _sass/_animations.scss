@@ -24,45 +24,22 @@
    PAGE TRANSITIONS (swipe between nav pages)
    ========================================================================== */
 
-.archive,
-.page {
-  overflow: hidden;
-  position: relative;
-}
-
-.archive.swipe-out-left,
-.page.swipe-out-left {
-  animation: swipeOutLeft 0.35s ease-in forwards;
-}
-
-.archive.swipe-out-right,
-.page.swipe-out-right {
-  animation: swipeOutRight 0.35s ease-in forwards;
+.archive.swipe-in-right,
+.page.swipe-in-right {
+  animation: swipeInRight 0.35s ease-out both;
 }
 
 .archive.swipe-in-left,
 .page.swipe-in-left {
-  animation: swipeInLeft 0.35s ease-out forwards;
+  animation: swipeInLeft 0.35s ease-out both;
 }
 
-.archive.swipe-in-right,
-.page.swipe-in-right {
-  animation: swipeInRight 0.35s ease-out forwards;
-}
-
-@keyframes swipeOutLeft {
-  from { transform: translateX(0); opacity: 1; }
-  to   { transform: translateX(-100%); opacity: 0; }
-}
-@keyframes swipeOutRight {
-  from { transform: translateX(0); opacity: 1; }
-  to   { transform: translateX(100%); opacity: 0; }
-}
-@keyframes swipeInLeft {
-  from { transform: translateX(100%); opacity: 0; }
-  to   { transform: translateX(0); opacity: 1; }
-}
 @keyframes swipeInRight {
-  from { transform: translateX(-100%); opacity: 0; }
-  to   { transform: translateX(0); opacity: 1; }
+  0%   { transform: translateX(80%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes swipeInLeft {
+  0%   { transform: translateX(-80%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
 }
