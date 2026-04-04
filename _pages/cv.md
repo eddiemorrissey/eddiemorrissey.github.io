@@ -11,6 +11,11 @@ redirect_from:
 
 Achievements
 ======
+
+![Receiving Excellence Award From COO](/images/receiving-excellence-award-from-coo.jpg){: .align-center style="max-width: 500px;"}
+*Receiving Excellence Award From COO*
+{: .text-center}
+
 * Recipient of **Werfen Leadership & Management Excellence Award**.
 * Recipient of **NuVasive Cheetah Quarterly Award** (EMEA).
 * Finalist in **Universitas 21** global competition.
