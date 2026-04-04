@@ -19,3 +19,40 @@
     opacity: 1;
   }
 }
+
+/* ==========================================================================
+   PAGE TRANSITIONS (swipe between nav pages)
+   ========================================================================== */
+
+#main {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.page-transition-wrapper {
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.page-transition-wrapper.slide-out-left {
+  transform: translateX(-100%);
+}
+
+.page-transition-wrapper.slide-out-right {
+  transform: translateX(100%);
+}
+
+.page-transition-wrapper.slide-in-left {
+  transform: translateX(100%);
+  transition: none;
+}
+
+.page-transition-wrapper.slide-in-right {
+  transform: translateX(-100%);
+  transition: none;
+}
+
+.page-transition-wrapper.slide-in-active {
+  transform: translateX(0);
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
