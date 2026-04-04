@@ -24,35 +24,45 @@
    PAGE TRANSITIONS (swipe between nav pages)
    ========================================================================== */
 
-#main {
+.archive,
+.page {
+  overflow: hidden;
   position: relative;
-  overflow-x: hidden;
 }
 
-.page-transition-wrapper {
-  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: transform;
+.archive.swipe-out-left,
+.page.swipe-out-left {
+  animation: swipeOutLeft 0.35s ease-in forwards;
 }
 
-.page-transition-wrapper.slide-out-left {
-  transform: translateX(-100%);
+.archive.swipe-out-right,
+.page.swipe-out-right {
+  animation: swipeOutRight 0.35s ease-in forwards;
 }
 
-.page-transition-wrapper.slide-out-right {
-  transform: translateX(100%);
+.archive.swipe-in-left,
+.page.swipe-in-left {
+  animation: swipeInLeft 0.35s ease-out forwards;
 }
 
-.page-transition-wrapper.slide-in-left {
-  transform: translateX(100%);
-  transition: none;
+.archive.swipe-in-right,
+.page.swipe-in-right {
+  animation: swipeInRight 0.35s ease-out forwards;
 }
 
-.page-transition-wrapper.slide-in-right {
-  transform: translateX(-100%);
-  transition: none;
+@keyframes swipeOutLeft {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
 }
-
-.page-transition-wrapper.slide-in-active {
-  transform: translateX(0);
-  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+@keyframes swipeOutRight {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+@keyframes swipeInLeft {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes swipeInRight {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
 }
