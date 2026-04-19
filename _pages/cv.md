@@ -16,22 +16,40 @@ Strategic leader in advancing medical technology, specializing in quality assura
 Achievements
 ======
 
-<div style="display: flex; align-items: center; gap: 2em; flex-wrap: wrap;">
-  <div style="flex: 1; min-width: 250px;">
-    <img src="/images/receiving-excellence-award-from-coo.jpg" alt="Receiving Excellence Award From COO" style="max-width: 100%; border-radius: 4px;">
-    <p style="text-align: center; font-style: italic;">Receiving Excellence Award From COO</p>
-  </div>
-  <div style="flex: 1; min-width: 250px;">
-    <ul>
-      <li>Recipient of <strong>Werfen Leadership & Management Excellence Award</strong>.</li>
-      <li>Recognition Award: Leadership for transforming the Memphis Global Operation Center and promoting excellence.</li>
-      <li>Recipient of <strong>NuVasive Cheetah Quarterly Award</strong> (EMEA).</li>
-      <li>Finalist in <strong>Universitas 21</strong>, a competition between leading global universities.</li>
-      <li>Selected as university representative for <strong>PwC Innovation Challenge</strong>.</li>
-      <li>Recipient of <strong>Newstalk MBA bursary</strong> for MBA at UCD Michael Smurfit Business School.</li>
-    </ul>
-  </div>
-</div>
+<style>
+.hover-img-container {
+  position: relative;
+  display: inline;
+  cursor: pointer;
+}
+.hover-img-container .hover-img {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 1.5em;
+  z-index: 10;
+  max-width: 400px;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.hover-img-container:hover .hover-img {
+  display: block;
+}
+</style>
+
+<ul>
+  <li>
+    <span class="hover-img-container">
+      Recipient of <strong>Werfen Leadership & Management Excellence Award</strong>.
+      <img class="hover-img" src="/images/receiving-excellence-award-from-coo.jpg" alt="Receiving Excellence Award From COO">
+    </span>
+  </li>
+  <li>Recognition Award: Leadership for transforming the Memphis Global Operation Center and promoting excellence.</li>
+  <li>Recipient of <strong>NuVasive Cheetah Quarterly Award</strong> (EMEA).</li>
+  <li>Finalist in <strong>Universitas 21</strong>, a competition between leading global universities.</li>
+  <li>Selected as university representative for <strong>PwC Innovation Challenge</strong>.</li>
+  <li>Recipient of <strong>Newstalk MBA bursary</strong> for MBA at UCD Michael Smurfit Business School.</li>
+</ul>
 
 Education
 ======
