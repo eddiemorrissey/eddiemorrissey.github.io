@@ -180,6 +180,12 @@ exclude:
   - package.json
   - tmp
   - vendor
+  - llama.cpp
+  - flask-chatbot
+  - pi-ivdr-app
+  - docs
+  - talkmap
+  - .venv
 keep_files:
   - .git
   - .svn

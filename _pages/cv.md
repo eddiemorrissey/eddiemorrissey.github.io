@@ -61,7 +61,7 @@ Education
   * Capstone: Partnered with a consulting firm with annual revenues in excess of a billion, to develop a growth strategy for the firm's supply chain services lines.
 * **MSc, Biomedical Engineering**, University of Galway
   * Thesis: Addressing a clinical need for Stress Urinary Incontinence, as identified by BioInnovate.
-* **BEng, Biomedical Engineering**, University of Limerick
+* <span class="hover-img-container">**BEng, Biomedical Engineering**, University of Limerick<img class="hover-img" src="/images/beng-biomedical-engineering-certificate.jpg" alt="BEng Biomedical Engineering Certificate - University of Limerick"></span>
   * Final Year Project: Investigation of hemodynamic factors and their effect on Aneurysm formation.
 
 Career Experience
