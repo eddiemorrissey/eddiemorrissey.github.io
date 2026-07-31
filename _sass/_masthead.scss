@@ -4,7 +4,7 @@
 
 .masthead {
   position: fixed;
-  background: white;
+  background: #0d0d0d;
   border-bottom: 1px solid $border-color;
   height: $masthead-height;
   top: 0;
@@ -20,7 +20,7 @@
     @include container;
     @include clearfix;
     padding: 1em 1em 1em;
-    font-family: $sans-serif-narrow;
+    font-family: $space-grotesk;
 
     @include breakpoint($x-large) {
       max-width: $x-large;
@@ -53,6 +53,10 @@
 
   &--lg {
     padding-right: 3em;
-    font-weight: 700;
+    font-family: $archivo-black;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 0.95em;
   }
 }

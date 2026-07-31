@@ -183,6 +183,11 @@
     padding: 0.5rem 0;
     color: $masthead-link-color;
     text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 
     &:hover {
       color: $masthead-link-color-hover;
@@ -259,8 +264,8 @@
     padding: 5px;
     border: 1px solid $border-color;
     border-radius: $border-radius;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(#000, 0.25);
+    background: #0d0d0d;
+    box-shadow: 0 0 10px rgba(#000, 0.6);
 
     a {
       margin: 0;
@@ -294,7 +299,7 @@
       width: 0;
       border-style: solid;
       border-width: 0 10px 10px;
-      border-color: #fff transparent;
+      border-color: #0d0d0d transparent;
       display: block;
       z-index: 1;
     }
