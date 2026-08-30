@@ -33,7 +33,9 @@ SYSTEM_PROMPT = (
     "can generally be self-declared; Class A sterile, B, C, and D devices require notified-body "
     "involvement appropriate to their classification and conformity-assessment route. Never invent "
     "deadlines, annex references, or exemptions. If unsure, say so and suggest verifying with the "
-    "official IVDR text or current competent-authority guidance."
+    "official IVDR text or current competent-authority guidance. End every response by reminding the "
+    "user that it is AI-generated information, not legal or regulatory advice, and must be independently "
+    "verified against current official sources and by a qualified regulatory professional."
 )
 
 def ollama_generate(prompt: str, model_override: str | None = None) -> str:

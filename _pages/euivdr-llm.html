@@ -91,6 +91,27 @@ author_profile: false
     }
     .euivdr-status a:hover { opacity: 1; }
 
+    .euivdr-disclaimer {
+        margin: 0;
+        padding: 12px 20px;
+        background: #fff7ed;
+        color: #7c2d12;
+        border-bottom: 1px solid #fed7aa;
+        font-size: 13px;
+        line-height: 1.45;
+        text-align: center;
+    }
+
+    .euivdr-output-warning {
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px solid #e5e7eb;
+        color: #9a3412;
+        font-size: 11px;
+        line-height: 1.4;
+        font-weight: 600;
+    }
+
     .euivdr-chat-messages {
         flex: 1;
         overflow-y: auto;
@@ -147,6 +168,14 @@ author_profile: false
     .euivdr-chat-input-form {
         display: flex;
         gap: 12px;
+    }
+
+    .euivdr-input-disclaimer {
+        margin: 10px 4px 0;
+        color: #6b7280;
+        font-size: 11px;
+        line-height: 1.4;
+        text-align: center;
     }
 
     #euivdrMessageInput {
@@ -260,6 +289,10 @@ author_profile: false
             <p>AI-powered regulatory compliance guidance for In Vitro Diagnostic Regulation</p>
             <div id="euivdrStatus" class="euivdr-status" aria-live="polite"><span class="dot"></span> Connecting to Pi…</div>
         </div>
+
+        <p class="euivdr-disclaimer" role="note">
+            <strong>Important:</strong> This tool produces AI-generated general information, not legal, regulatory, quality, or professional advice. Responses may be incomplete, outdated, or incorrect. Independently verify every output against the current IVDR text, European Commission and MDCG guidance, applicable standards, and advice from a qualified regulatory professional before making decisions. Do not rely on this tool as your sole source of compliance information.
+        </p>
         
         <div class="euivdr-chat-messages" id="euivdrChatMessages">
             <div class="euivdr-message bot">
@@ -291,6 +324,7 @@ author_profile: false
                 >
                 <button type="submit" id="euivdrSendButton">Send</button>
             </form>
+            <p class="euivdr-input-disclaimer">By using this assistant, you acknowledge that its outputs require independent professional review and verification.</p>
         </div>
     </div>
 </div>
@@ -399,6 +433,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const contentDiv = document.createElement('div');
         contentDiv.className = 'euivdr-message-content';
         contentDiv.innerHTML = formatMessage(text);
+
+        if (sender === 'bot') {
+            const warningDiv = document.createElement('div');
+            warningDiv.className = 'euivdr-output-warning';
+            warningDiv.textContent = 'AI-generated output — independently verify before relying on it. Not legal or regulatory advice.';
+            contentDiv.appendChild(warningDiv);
+        }
 
         messageDiv.appendChild(contentDiv);
         chatMessages.appendChild(messageDiv);
