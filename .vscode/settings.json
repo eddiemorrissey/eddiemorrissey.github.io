@@ -3,6 +3,7 @@
         "git add": true,
         "git commit": true,
         "git push": true,
-        "git remote": true
+        "git remote": true,
+        "git pull": true
     }
 }
