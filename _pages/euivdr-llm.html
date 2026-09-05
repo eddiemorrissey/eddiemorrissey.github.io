@@ -332,7 +332,6 @@ author_profile: false
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const BASE_URL = '{{ site.ivdr_pi_base_url }}';
-    const CFG_MODEL = '{{ site.ivdr_model | default: "" }}';
     const FALLBACK_TOPICS = [
         'Device classification',
         'Conformity assessment',
@@ -481,8 +480,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    message: message,
-                    model: CFG_MODEL
+                    message: message
                 })
             });
 

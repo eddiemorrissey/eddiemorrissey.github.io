@@ -38,13 +38,12 @@ SYSTEM_PROMPT = (
     "verified against current official sources and by a qualified regulatory professional."
 )
 
-def ollama_generate(prompt: str, model_override: str | None = None) -> str:
+def ollama_generate(prompt: str) -> str:
     try:
-        model = (model_override or OLLAMA_MODEL).strip() or OLLAMA_MODEL
         resp = requests.post(
             f"{OLLAMA_HOST}/api/generate",
             json={
-                "model": model,
+                "model": OLLAMA_MODEL,
                 "prompt": prompt,
                 "stream": False,
             },
@@ -113,7 +112,7 @@ def health():
 def chat():
     payload = request.json or {}
     user_message = str(payload.get('message', '')).strip()
-    model_req = str(payload.get('model', '')).strip() or None
+    # Model selection belongs to server configuration, never to the caller.
     if not user_message:
         return jsonify({'response': 'Please enter a message.'})
 
@@ -126,8 +125,8 @@ def chat():
         return jsonify({'response': response, 'backend': 'llamacpp'})
     else:
         prompt = build_prompt(user_message)
-        response = ollama_generate(prompt, model_override=model_req)
-        return jsonify({'response': response, 'backend': 'ollama', 'model': model_req or OLLAMA_MODEL})
+        response = ollama_generate(prompt)
+        return jsonify({'response': response, 'backend': 'ollama', 'model': OLLAMA_MODEL})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))

@@ -50,7 +50,9 @@ curl -X POST http://<PI_IP>:5001/chat \
   -d '{"message": "Explain IVDR device classes"}'
 ```
 
-Your website page `_pages/euivdr-llm.html` already calls `http://<PI_IP>:5001/chat` first. Update the IP in `_config.yml` (`ivdr_pi_base_url`). The site also passes `model` from `_config.yml` (`ivdr_model`) so you can switch models without editing code.
+Your website page `_pages/euivdr-llm.html` calls the backend configured by `ivdr_pi_base_url` in `_config.yml`. Public HTTPS pages require an HTTPS backend URL. Model selection is controlled exclusively by the server's `OLLAMA_MODEL` environment variable; request-supplied model values are ignored. Set this variable to an installed model and restart the API to change models. The website's `ivdr_model` setting is no longer used.
+
+Deploy backend changes to the machine running this API and restart its service. Publishing the GitHub Pages website alone does not update a running Flask backend.
 
 ## Important: HTTPS pages cannot call HTTP Pi directly
 GitHub Pages serves your site over HTTPS. Browsers block requests from HTTPS pages to `http://` private network URLs (mixed content + Private Network Access). To make the page reach your Pi:
