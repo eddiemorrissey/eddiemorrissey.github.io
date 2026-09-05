@@ -55,7 +55,7 @@ Education
 ======
 * **Executive Leadership Program**, University of Oxford, Saïd Business School
   * Modules inc: Leading with Power and Influence, Mastering Complexity and Polarity, Leading for High Performance
-* **Executive MBA**, University College Dublin
+* <span class="hover-img-container"><strong>Executive MBA</strong>, University College Dublin<img class="hover-img" src="/images/executive-mba-ucd.jpg" alt="Executive MBA certificate from University College Dublin"></span>
   * Haas School of Business, Berkeley — Exchange Program: Leadership in the 21st Century
   * IE Business School — Exchange Program: High Tech Entrepreneurship
   * Capstone: Partnered with a consulting firm with annual revenues in excess of a billion, to develop a growth strategy for the firm's supply chain services lines.
