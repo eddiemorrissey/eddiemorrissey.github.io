@@ -287,7 +287,7 @@ author_profile: false
         <div class="euivdr-chat-header">
             <h1>EU IVDR LLM Assistant</h1>
             <p>AI-powered regulatory compliance guidance for In Vitro Diagnostic Regulation</p>
-            <div id="euivdrStatus" class="euivdr-status" aria-live="polite"><span class="dot"></span> Connecting to Pi…</div>
+            <div id="euivdrStatus" class="euivdr-status" aria-live="polite"><span class="dot"></span> Connecting…</div>
         </div>
 
         <p class="euivdr-disclaimer" role="note">
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
             '',
             ...FALLBACK_TOPICS.map((topic) => `• ${topic}`),
             '',
-            'Please try your question again in a moment if the Pi connection is still starting up.'
+            'Please try your question again in a moment if the connection is still starting up.'
         ].join('\n');
     }
 
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function updateStatus() {
-        setStatus('', 'Checking Pi…', false);
+        setStatus('', 'Checking connection…', false);
 
         try {
             const response = await fetch(`${BASE_URL}/health`, {
@@ -412,17 +412,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const health = await response.json();
-            const model = (health.model || CFG_MODEL || 'unknown').trim();
-            const backend = health.backend === 'llamacpp' ? 'llama.cpp' : (health.backend || 'ollama');
 
             if (health.reachable) {
-                setStatus('ok', `Pi connected • ${backend} • Model: ${model}`, true);
+                setStatus('ok', 'Connected', true);
             } else {
-                setStatus('warn', 'Pi reachable but model backend is unavailable', true);
+                setStatus('warn', 'Service temporarily unavailable', true);
             }
         } catch (error) {
             console.error('EU IVDR health check failed:', error);
-            setStatus('err', 'Pi unreachable — using fallback responses', true);
+            setStatus('err', 'Unable to connect — using fallback responses', true);
         }
     }
 
@@ -497,18 +495,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (data && typeof data.response === 'string' && data.response.trim()) {
                 addMessage(data.response, 'bot');
-                const backend = data.backend === 'llamacpp' ? 'llama.cpp' : (data.backend || 'ollama');
-                const model = (data.model || CFG_MODEL || 'unknown').trim();
-                setStatus('ok', `Pi connected • ${backend} • Model: ${model}`, true);
+                setStatus('ok', 'Connected', true);
             } else {
                 addMessage(getFallbackResponse(), 'bot');
-                setStatus('warn', 'Pi responded with an empty message', true);
+                setStatus('warn', 'Received an empty response', true);
             }
         } catch (error) {
             console.error('EU IVDR chat request failed:', error);
             typingIndicator.remove();
             addMessage(getFallbackResponse(), 'bot');
-            setStatus('err', 'Pi unreachable — using fallback responses', true);
+            setStatus('err', 'Unable to connect — using fallback responses', true);
         } finally {
             messageInput.disabled = false;
             sendButton.disabled = false;
